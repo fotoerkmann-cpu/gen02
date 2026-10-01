@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Probabilidade em Genética & Heredogramas ENEM - Prof. Lafa (@lafabio)</title>
+  <style>
+    @page {
+      size: A4;
+      margin: 14mm 12mm 14mm 12mm;
+    }
+    * {
+      box-sizing: border-box;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+    body {
+      font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+      font-size: 9.5pt;
+      line-height: 1.45;
+      color: #1e293b;
+      background: #f8fafc;
+      margin: 0;
+      padding: 20px;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: #ffffff;
+      padding: 24px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    }
+
+    /* HEADER */
+    .header-card {
+      background: linear-gradient(135deg, #0f172a 0%, #1e40af 50%, #0284c7 100%);
+      color: #ffffff;
+      border-radius: 10px;
+      padding: 18px 22px;
+      margin-bottom: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .header-card h1 {
+      margin: 0 0 4px 0;
+      font-size: 15pt;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+    .header-card p {
+      margin: 0;
+      font-size: 9pt;
+      color: #bae6fd;
+      font-weight: 500;
+    }
+    .author-badge {
+      background: rgba(255, 255, 255, 0.18);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      padding: 8px 14px;
+      border-radius: 8px;
+      text-align: right;
+    }
+    .author-badge .name {
+      font-size: 11pt;
+      font-weight: 700;
+      display: block;
+    }
+    .author-badge .social {
+      font-size: 8.5pt;
+      color: #fef08a;
+      font-weight: 600;
+    }
+
+    .meta-bar {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    .meta-chip {
+      background: #f1f5f9;
+      border-left: 3px solid #0284c7;
+      padding: 6px 12px;
+      border-radius: 4px;
+      font-size: 8.5pt;
+      font-weight: 600;
+      color: #334155;
+    }
+
+    .theory-box {
+      background: #f0fdfa;
+      border: 1px solid #99f6e4;
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin-bottom: 20px;
+      font-size: 8.8pt;
+      color: #134e4a;
+    }
+    .theory-box strong {
+      color: #0f766e;
+    }
+
+    /* QUESTÕES */
+    .question {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 14px 16px;
+      margin-bottom: 14px;
+      transition: all 0.2s ease;
+    }
+    .question.correct-border {
+      border: 1.5px solid #10b981;
+      background: #f0fdf4;
+    }
+    .question.incorrect-border {
+      border: 1.5px solid #ef4444;
+      background: #fef2f2;
+    }
+    .q-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .q-badge {
+      background: #e0f2fe;
+      color: #0369a1;
+      font-weight: 800;
+      font-size: 8.5pt;
+      padding: 3px 9px;
+      border-radius: 5px;
+      border: 1px solid #bae6fd;
+    }
+    .q-tag {
+      background: #f1f5f9;
+      color: #475569;
+      font-size: 7.5pt;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 4px;
+      text-transform: uppercase;
+    }
+    .q-text {
+      color: #1f2937;
+      margin-bottom: 10px;
+      text-align: justify;
+    }
+
+    /* DIAGRAMAS SVG */
+    .svg-wrapper {
+      display: flex;
+      justify-content: center;
+      margin: 10px 0;
+      background: #fafafa;
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px dashed #cbd5e1;
+    }
+
+    /* OPÇÕES */
+    .options-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .opt-label {
+      display: flex;
+      align-items: center;
+      padding: 8px 12px;
+      border-radius: 6px;
+      border: 1px solid #e2e8f0;
+      background: #f8fafc;
+      cursor: pointer;
+      font-size: 9pt;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .opt-label:hover {
+      background: #f1f5f9;
+      border-color: #cbd5e1;
+    }
+    .opt-label input[type="radio"] {
+      margin-right: 10px;
+      accent-color: #0284c7;
+      transform: scale(1.15);
+      cursor: pointer;
+    }
+    .opt-label.user-selected {
+      border-color: #0284c7;
+      background: #f0f9ff;
+      font-weight: 600;
+    }
+    .opt-label.is-correct {
+      background: #dcfce7 !important;
+      border-color: #22c55e !important;
+      color: #14532d;
+      font-weight: 700;
+    }
+    .opt-label.is-wrong {
+      background: #fee2e2 !important;
+      border-color: #ef4444 !important;
+      color: #7f1d1d;
+      text-decoration: line-through;
+    }
+
+    /* FEEDBACK */
+    .feedback-box {
+      display: none;
+      margin-top: 10px;
+      padding: 10px 14px;
+      border-radius: 6px;
+      font-size: 8.5pt;
+      line-height: 1.45;
+    }
+    .feedback-box.show {
+      display: block;
+    }
+    .feedback-box.correct {
+      background: #ecfdf5;
+      border-left: 4px solid #10b981;
+      color: #065f46;
+    }
+    .feedback-box.incorrect {
+      background: #fff1f2;
+      border-left: 4px solid #f43f5e;
+      color: #9f1239;
+    }
+
+    /* CONTROLES */
+    .actions-card {
+      background: #f8fafc;
+      border: 2px dashed #cbd5e1;
+      border-radius: 10px;
+      padding: 24px;
+      text-align: center;
+      margin-top: 24px;
+    }
+    .btn-submit {
+      background: linear-gradient(135deg, #0284c7, #1e40af);
+      color: #ffffff;
+      border: none;
+      padding: 12px 28px;
+      font-size: 11pt;
+      font-weight: 700;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25);
+      transition: transform 0.1s, box-shadow 0.1s;
+    }
+    .btn-submit:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(2, 132, 199, 0.35);
+    }
+    .btn-reset {
+      background: #64748b;
+      color: #ffffff;
+      border: none;
+      padding: 8px 16px;
+      font-size: 9pt;
+      font-weight: 600;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-left: 10px;
+    }
+
+    /* SCORE */
+    #score-board {
+      display: none;
+      background: #ffffff;
+      border: 2px solid #0284c7;
+      border-radius: 10px;
+      padding: 20px;
+      margin-top: 20px;
+      text-align: center;
+    }
+    .score-total {
+      font-size: 26pt;
+      font-weight: 900;
+      color: #0f172a;
+      margin: 6px 0;
+    }
+    .score-detail {
+      font-size: 10.5pt;
+      color: #475569;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- CABEÇALHO COM AUTORIA -->
+  <div class="header-card">
+    <div class="title-group">
+      <h1>Probabilidade em Genética & Heredogramas • ENEM</h1>
+      <p>Regra do "E", Regra do "OU", Probabilidade Condicionada e Análise Genealógica</p>
+    </div>
+    <div class="author-badge">
+      <span class="name">Prof. Lafa</span>
+      <span class="social">@lafabio</span>
+    </div>
+  </div>
+
+  <div class="meta-bar">
+    <div class="meta-chip">Total: 15 Questões com Heredogramas Vetoriais</div>
+    <div class="meta-chip">Padrão ENEM / Vestibulares Oficiais</div>
+    <div class="meta-chip">Gabarito com Cálculos Fracionários Detalhados</div>
+  </div>
+
+  <div class="theory-box">
+    <strong>Guia Rápido de Aplicação em Heredogramas:</strong><br>
+    • <strong>Regra do "E" (Eventos Simultâneos / Independentes):</strong> Multiplicam-se as frações: P(A e B) = P(A) &times; P(B).<br>
+    • <strong>Regra do "OU" (Eventos Mutuamente Exclusivos):</strong> Somam-se as frações: P(A ou B) = P(A) + P(B).<br>
+    • <strong>Probabilidade Condicionada:</strong> Quando o indivíduo é demonstrado sadio no heredograma, elimina-se o genótipo <em>aa</em>, e o denominador do espaço amostral passa a ser 3 (1 AA : 2 Aa).
+  </div>
+
+  <form id="simulado-prob-form">
+
+    <!-- QUESTÃO 01 -->
+    <div class="question" id="q-block-1">
+      <div class="q-header">
+        <span class="q-badge">Questão 01</span>
+        <span class="q-tag">Regra do E (Simultâneos)</span>
+      </div>
+      <div class="q-text">
+        O albinismo oculocutâneo é uma anomalia autossômica recessiva (<em>aa</em>). Um casal em que ambos são heterozigotos para o gene do albinismo planeja ter um bebê. Qual é a probabilidade de que essa criança seja do sexo biológico masculino E albina?
+      </div>
+      <div class="options-group">
+        <label class="opt-label"><input type="radio" name="q1" value="A"> A) 1/2.</label>
+        <label class="opt-label"><input type="radio" name="q1" value="B"> B) 1/4.</label>
+        <label class="opt-label"><input type="radio" name="q1" value="C"> C) 1/8.</label>
+        <label class="opt-label"><input type="radio" name="q1" value="D"> D) 3/8.</label>
+        <label class="opt-label"><input type="radio" name="q1" value="E"> E) 1/16.</label>
+      </div>
+      <div class="feedback-box" id="feedback-1"></div>
+    </div>
+
+    <!-- QUESTÃO 02 -->
+    <div class="question" id="q-block-2">
+      <div class="q-header">
+        <span class="q-badge">Questão 02</span>
+        <span class="q-tag">Regra do OU (Mutuamente Exclusivos)</span>
+      </div>
+      <div class="q-text">
+        Em um cruzamento entre dois coelhos heterozigotos para o albinismo (<em>Cc &times; Cc</em>), deseja-se saber a probabilidade de um descendente nascer homozigoto (seja ele homozigoto dominante OU homozigoto recessivo). Essa probabilidade é de:
+      </div>
+      <div class="options-group">
+        <label class="opt-label"><input type="radio" name="q2" value="A"> A) 1/4.</label>
+        <label class="opt-label"><input type="radio" name="q2" value="B"> B) 1/2.</label>
+        <label class="opt-label"><input type="radio" name="q2" value="C"> C) 3/4.</label>
+        <label class="opt-label"><input type="radio" name="q2" value="D"> D) 2/3.</label>
+        <label class="opt-label"><input type="radio" name="q2" value="E"> E) 1/8.</label>
+      </div>
+      <div class="feedback-box" id="feedback-2"></div>
+    </div>
+
+    <!-- QUESTÃO 03 COM HEREDOGRAMA 1 -->
+    <div class="question" id="q-block-3">
+      <div class="q-header">
+        <span class="q-badge">Questão 03</span>
+        <span class="q-tag">Probabilidade Condicionada & Heredograma</span>
+      </div>
+      <div class="q-text">
+        Considere a genealogia a seguir, que registra uma afecção autossômica recessiva rara em uma família:
+      </div>
+
+      <div class="svg-wrapper">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 210" width="380" height="160">
+          <style>
+            .l { stroke: #1e293b; stroke-width: 2.2; fill: none; }
+            .sq-w { fill: #ffffff; stroke: #1e293b; stroke-width: 2.2; }
+            .sq-b { fill: #0f172a; stroke: #0f172a; stroke-width: 2.2; }
+            .ci-w { fill: #ffffff; stroke: #1e293b; stroke-width: 2.2; }
+            .ci-b { fill: #0f172a; stroke: #0f172a; stroke-width: 2.2; }
+            .t-g { font-family: 'Segoe UI', sans-serif; font-size: 15px; font-weight: 800; fill: #0284c7; }
+            .t-n { font-family: 'Segoe UI', sans-serif; font-size: 11px; font-weight: 600; fill: #334155; text-anchor: middle; }
+          </style>
+          <text x="25" y="55" class="t-g">I</text>
+          <text x="25" y="155" class="t-g">II</text>
+          <!-- Casal I-1 e I-2 -->
+          <line x1="210" y1="50" x2="290" y2="50" class="l" />
+          <line x1="250" y1="50" x2="250" y2="95" class="l" />
+          <rect x="180" y="35" width="30" height="30" class="sq-w" />
+          <text x="195" y="80" class="t-n">1</text>
+          <circle cx="305" cy="50" r="15" class="ci-w" />
+          <text x="305" y="80" class="t-n">2</text>
+          <!-- Filhos II-1 e II-2 -->
+          <line x1="180" y1="95" x2="320" y2="95" class="l" />
+          <line x1="180" y1="95" x2="180" y2="135" class="l" />
+          <line x1="320" y1="95" x2="320" y2="135" class="l" />
+          <rect x="165" y="135" width="30" height="30" class="sq-b" />
+          <text x="180" y="180" class="t-n">1</text>
+          <circle cx="320" cy="150" r="15" class="ci-w" />
+          <text x="320" y="180" class="t-n">2</text>
+        </svg>
+      </div>
+
+      <div class="q-text">
+        Sabendo que o indivíduo II-1 é afetado (<em>aa</em>) e que a sua irmã II-2 é fenotipicamente saudável, a probabilidade exata de que a jovem II-2 seja portadora heterozigota (<em>Aa</em>) do alelo causador da anomalia é de:
+      </div>
+      <div class="options-group">
+        <label class="opt-label"><input type="radio" name="q3" value="A"> A) 1/4.</label>
+        <label class="opt-label"><input type="radio" name="q3" value="B"> B) 1/2.</label>
+        <label class="opt-label"><input type="radio" name="q3" value="C"> C) 2/3.</label>
+        <label class="opt-label"><input type="radio" name="q3" value="D"> D) 3/4.</label>
+        <label class="opt-label"><input type="radio" name="q3" value="E"> E) 1/3.</label>
+      </div>
+      <div class="feedback-box" id="feedback-3"></div>
+    </div>
+
+    <!-- QUESTÃO 04 -->
+    <div class="question" id="q-block-4">
+      <div class="q-header">
+        <span class="q-badge">Questão 04</span>
+        <span class="q-tag">Eventos Sucessivos Independentes</span>
+      </div>
+      <div class="q-text">
+        Dois indivíduos heterozigotos para o locus do nanismo acondroplásico (condição autossômica dominante com letalidade fetal no homozigoto dominante <em>AA</em>) decidem ter dois filhos. Desconsiderando os conceptos inviáveis, qual é a probabilidade de ambos os filhos nascerem com acondroplasia?
+      </div>
+      <div class="options-group">
+        <label class="opt-label"><input type="radio" name="q4" value="A"> A) 4/9.</label>
+        <label class="opt-label"><input type="radio" name="q4" value="B"> B) 9/16.</label>
+        <label class="opt-label"><input type="radio" name="q4" value="C"> C) 1/9.</label>
+        <label class="opt-label"><input type="radio" name="q4" value="D"> D) 1/3.</label>
+        <label class="opt-label"><input type="radio" name="q4" value="E"> E) 2/3.</label>
+      </div>
+      <div class="feedback-box" id="feedback-4"></div>
+    </div>
+
+    <!-- QUESTÃO 05 COM HEREDOGRAMA 2 -->
+    <div class="question" id="q-block-5">
+      <div class="q-header">
+        <span class="q-badge">Questão 05</span>
+        <span class="q-tag">Condicionada + Herança Recessiva</span>
+      </div>
+      <div class="q-text">
+        Analise o heredograma abaixo, que ilustra a segregação de fenilcetonúria (doença autossômica recessiva):
+      </div>
+
+      <div class="svg-wrapper">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 540 210" width="400" height="155">
+          <style>
+            .l { stroke: #1e293b; stroke-width: 2.2; fill: none; }
+            .sq-w { fill: #ffffff; stroke: #1e293b; stroke-width: 2.2; }
+            .sq-b { fill: #0f172a; stroke: #0f172a; stroke-width: 2.2; }
+            .ci-w { fill: #ffffff; stroke: #1e293b; stroke-width: 2.2; }
+            .ci-b { fill: #0f172a; stroke: #0f172a; stroke-width: 2.2; }
+            .t-g { font-family: 'Segoe UI', sans-serif; font-size: 15px; font-weight: 800; fill: #0284c7; }
+            .t-n { font-family: 'Segoe UI', sans-serif; font-size: 11px; font-weight: 600; fill: #334155; text-anchor: middle; }
+          </style>
+          <text x="25" y="55" class="t-g">I</text>
+          <text x="25" y="155" class="t-g">II</text>
+          <line x1="170" y1="50" x2="250" y2="50" class="l" />
+          <line x1="210" y1="50" x2="210" y2="95" class="l" />
+          <rect x="140" y="35" width="30" height="30" class="sq-w" />
+          <text x="155" y="80" class="t-n">1</text>
+          <circle cx="265" cy="50" r="15" class="ci-w" />
+          <text x="265" y="80" class="t-n">2</text>
+          <line x1="145" y1="95" x2="275" y2="95" class="l" />
+          <line x1="145" y1="95" x2="145" y2="135" class="l" />
+          <line x1="275" y1="95" x2="275" y2="135" class="l" />
+          <circle cx="145" cy="150" r="15" class="ci-b" />
+          <text x="145" y="180" class="t-n">1</text>
+          <rect x="260" y="135" width="30" height="30" class="sq-w" />
+          <text x="275" y="180" class="t-n">2</text>
+          <!-- Casamento II-2 com mulher externa II-3 heterozigota -->
+          <line x1="290" y1="150" x2="380" y2="150" class="l" />
+          <circle cx="395" cy="150" r="15" class="ci-w" />
+          <text x="395" y="180" class="t-n">3</text>
+        </svg>
+      </div>
+
+      <div class="q-text">
+        O homem II-2 é sadio, mas tem a irmã II-1 afetada. Se ele se casar com a mulher II-3 (sabidamente heterozigota comprovada por teste genético), qual é a probabilidade de o primeiro filho biológico desse casal nascer com fenilcetonúria?
+      </div>
+      <div class="options-group">
+        <label class="opt-label"><input type="radio" name="q5" value="A"> A) 1/4.</label>
+        <label class="opt-label"><input type="radio" name="q5" value="B"> B) 1/6.</label>
+        <label class="opt-label"><input type="radio" name="q5" value="C"> C) 1/8.</label>
+        <label class="opt-label"><input type="radio" name="q5" value="D"> D) 1/12.</label>
+        <label class="opt-label"><input type="radio" name="q5" value="E"> E) 2/3.</label>
+      </div>
+      <div class="feedback-box" id="feedback-5"></div>
+    </div>
+
+    <!-- QUESTÃO 06 -->
+    <div class="question" id="q-block-6">
+      <div class="q-header">
+        <span class="q-badge">Questão 06</span>
+        <span class="q-tag">Regra do OU em Grupos Sanguíneos</span>
+      </div>
+      <div class="q-text">
+        Um homem com genótipo <em>I<sup>A</sup>i</em> casa-se com uma mulher <em>I<sup>B</sup>i</em>. Qual é a probabilidade de esse casal conceber uma criança que pertença ao grupo sanguíneo A <strong>OU</strong> ao grupo sanguíneo B?
+      </div>
+      <div class="options-group">
+        <label class="opt-label"><input type="radio" name="q6" value="A"> A) 1/4.</label>
+        <label class="opt-label"><input type="radio" name="q6" value="B"> B) 1/2.</label>
+        <label class="opt-label"><input type="radio" name="q6" value="C"> C) 3/4.</label>
+        <label class="opt-label"><input type="radio" name="q6" value="D"> D) 1/8.</label>
+        <label class="opt-label"><input type="radio" name="q6" value="E"> E) 100%.</label>
+      </div>
+      <div class="feedback-box" id="feedback-6"></div>
+    </div>
+
+    <!-- QUESTÃO 07 -->
+    <div class="question" id="q-block-7">
+      <div class="q-header">
+        <span class="q-badge">Questão 07</span>
+        <span class="q-tag">Teorema Binomial (Ordem Livre)</span>
+      </div>
+      <div class="q-text">
+        Um casal planeja ter três filhos. Sabendo que a probabilidade de conceber uma criança do sexo biológico masculino ou feminino é igual a 1/2 em cada parto, qual a probabilidade de que esse casal venha a ter <strong>exatamente dois meninos e uma menina</strong>, em qualquer ordem de nascimento?
+      </div>
+      <div class="options-group">
+        <label class="opt-label"><input type="radio" name="q7" value="A"> A) 1/8.</label>
+        <label class="opt-label"><input type="radio" name="q7" value="B"> B) 2/8.</label>
+        <label class="opt-label"><input type="radio" name="q7" value="C"> C) 3/8.</label>
+        <label class="opt-label"><input type="radio" name="q7" value="D"> D) 1/2.</label>
+        <label class="opt-label"><input type="radio" name="q7" value="E"> E) 5/8.</label>
+      </div>
+      <div class="feedback-box" id="feedback-7"></div>
+    </div>
+
+    <!-- QUESTÃO 08 COM HEREDOGRAMA 3 -->
+    <div class="question" id="q-block-8">
+      <div class="q-header">
+        <span class="q-badge">Questão 08</span>
+        <span class="q-tag">Heredograma Completo & Probabilidade</span>
+      </div>
+      <div class="q-text">
+        Analise a genealogia abaixo referente a um distúrbio autossômico recessivo que atinge a visão (miopia patológica congênita):
+      </div>
+
+      <div class="svg-wrapper">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 650 210" width="460" height="150">
+          <style>
+            .l { stroke: #1e293b; stroke-width: 2.2; fill: none; }
+            .sq-w { fill: #ffffff; stroke: #1e293b; stroke-width: 2.2; }
+            .sq-b { fill: #0f172a; stroke: #0f172a; stroke-width: 2.2; }
+            .ci-w { fill: #ffffff; stroke: #1e293b; stroke-width: 2.2; }
+            .ci-b { fill: #0f172a; stroke: #0f172a; stroke-width: 2.2; }
+            .t-g { font-family: 'Segoe UI', sans-serif; font-size: 15px; font-weight: 800; fill: #0284c7; }
+            .t-n { font-family: 'Segoe UI', sans-serif; font-size: 11px; font-weight: 600; fill: #334155; text-anchor: middle; }
+          </style>
+          <text x="20" y="55" class="t-g">I</text>
+          <text x="20" y="155" class="t-g">II</text>
+          <!-- Família A (I-1 e I-2) -->
+          <line x1="160" y1="50" x2="240" y2="50" class="l" />
+          <line x1="200" y1="50" x2="200" y2="95" class="l" />
+          <rect x="130" y="35" width="30" height="30" class="sq-w" />
+          <text x="145" y="80" class="t-n">1</text>
+          <circle cx="255" cy="50" r="15" class="ci-w" />
+          <text x="255" y="80" class="t-n">2</text>
+          <line x1="135" y1="95" x2="265" y2="95" class="l" />
+          <line x1="135" y1="95" x2="135" y2="135" class="l" />
+          <line x1="265" y1="95" x2="265" y2="135" class="l" />
+          <rect x="120" y="135" width="30" height="30" class="sq-b" />
+          <text x="135" y="180" class="t-n">1</text>
+          <circle cx="265" cy="150" r="15" class="ci-w" />
+          <text x="265" y="180" class="t-n">2</text>
+
+          <!-- Família B (I-3 míope e I-4 normal) -->
+          <line x1="430" y1="50" x2="510" y2="50" class="l" />
+          <line x1="470" y1="50" x2="470" y2="135" class="l" />
+          <rect x="400" y="35" width="30" height="30" class="sq-b" />
+          <text x="415" y="80" class="t-n">3</text>
+          <circle cx="525" cy="50" r="15" class="ci-w" />
+          <text x="525" y="80" class="t-n">4</text>
+          <!-- Filho II-3 -->
+          <rect x="455" y="135" width="30" height="30" class="sq-w" />
+          <text x="470" y="180" class="t-n">3</text>
+
+          <!-- União II-2 e II-3 -->
+          <line x1="280" y1="150" x2="455" y2="150" class="l" />
+        </svg>
+      </div>
+
+      <div class="q-text">
+        A jovem II-2 (sadia, irmã de míope) casa-se com o homem II-3 (sadio, filho de pai míope I-3). Qual a chance de esse casal conceber uma criança com a visão afetada pela miopia?
+      </div>
+      <div class="options-group">
+        <label class="opt-label"><input type="radio" name="q8" value="A"> A) 1/4.</label>
+        <label class="opt-label"><input type="radio" name="q8" value="B"> B) 1/6.</label>
+        <label class="opt-label"><input type="radio" name="q8" value="C"> C) 1/8.</label>
+        <label class="opt-label"><input type="radio" name="q8" value="D"> D) 1/12.</label>
+        <label class="opt-label"><input type="radio" name="q8" value="E"> E) 2/3.</label>
+      </div>
+      <div class="feedback-box" id="feedback-8"></div>
+    </div>
+
+    <!-- QUESTÃO 09 -->
+    <div class="question" id="q-block-9">
+      <div class="q-header">
+        <span class="q-badge">Questão 09</span>
+        <span class="q-tag">Eventos Independentes Sucessivos</span>
+      </div>
+      <div class="q-text">
+        Um casal heterozigoto para o gene do albinismo (<em>Aa</em>) já teve três filhos consecutivos com fenótipo albino. A mulher está grávida do quarto filho. Qual a probabilidade de essa quarta criança nascer com pigmentação normal da pele?
+      </div>
+      <div class="options-group">
+        <label class="opt-label"><input type="radio" name="q9" value="A"> A) 1/4.</label>
+        <label class="opt-label"><input type="radio" name="q9" value="B"> B) 3/4.</label>
+        <label class="opt-label"><input type="radio" name="q9" value="C"> C) 1/16.</label>
+        <label class="opt-label"><input type="radio" name="q9" value="D"> D) 27/64.</label>
+        <label class="opt-label"><input type="radio" name="q9" value="E"> E) Próxima de 100% por compensação estatística.</label>
+      </div>
+      <div class="feedback-box" id="feedback-9"></div>
+    </div>
+
+    <!-- QUESTÃO 10 -->
+    <div class="question" id="q-block-10">
+      <div class="q-header">
+        <span class="q-badge">Questão 10</span>
+        <span class="q-tag">Pelo Menos Um (Evento Complementar)</span>
+      </div>
+      <div class="q-text">
+        Um casal em que ambos são heterozigotos para uma condição recessiva (<em>Aa &times; Aa</em>) pretende ter 3 filhos. Qual a probabilidade matemática de que esse casal venha a ter <strong>pelo menos um</strong> filho afetado pela condição?
+      </div>
+      <div class="options-group">
+        <label class="opt-label"><input type="radio" name="q10" value="A"> A) 1/64.</label>
+        <label class="opt-label"><input type="radio" name="q10" value="B"> B) 27/64.</label>
+        <label class="opt-label"><input type="radio" name="q10" value="C"> C) 37/64.</label>
+        <label class="opt-label"><input type="radio" name="q10" value="D"> D) 3/4.</label>
+        <label class="opt-label"><input type="radio" name="q10" value="E"> E) 63/64.</label>
+      </div>
+      <div class="feedback-box" id="feedback-10"></div>
+    </div>
+
+    <!-- QUESTÃO 11 COM HEREDOGRAMA 4 -->
+    <div class="question" id="q-block-11">
+      <div class="q-header">
+        <span class="q-badge">Questão 11</span>
+        <span class="q-tag">Herança Ligada ao X no Heredograma</span>
+      </div>
+      <div class="q-text">
+        O daltonismo é uma herança recessiva ligada ao cromossomo X. Observe o heredograma abaixo:
+      </div>
+
+      <div class="svg-wrapper">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 210" width="380" height="155">
+          <style>
+            .l { stroke: #1e293b; stroke-width: 2.2; fill: none; }
+            .sq-w { fill: #ffffff; stroke: #1e293b; stroke-width: 2.2; }
+            .sq-b { fill: #0f172a; stroke: #0f172a; stroke-width: 2.2; }
+            .ci-w { fill: #ffffff; stroke: #1e293b; stroke-width: 2.2; }
+            .ci-b { fill: #0f172a; stroke: #0f172a; stroke-width: 2.2; }
+            .t-g { font-family: 'Segoe UI', sans-serif; font-size: 15px; font-weight: 800; fill: #0284c7; }
+            .t-n { font-family: 'Segoe UI', sans-serif; font-size: 11px; font-weight: 600; fill: #334155; text-anchor: middle; }
+          </style>
+          <text x="25" y="55" class="t-g">I</text>
+          <text x="25" y="155" class="t-g">II</text>
+          <line x1="200" y1="50" x2="280" y2="50" class="l" />
+          <line x1="240" y1="50" x2="240" y2="135" class="l" />
+          <rect x="170" y="35" width="30" height="30" class="sq-b" />
+          <text x="185" y="80" class="t-n">1</text>
+          <circle cx="295" cy="50" r="15" class="ci-w" />
+          <text x="295" y="80" class="t-n">2</text>
+          <!-- Filha II-1 com visão normal casada com II-2 -->
+          <circle cx="240" cy="150" r="15" class="ci-w" />
+          <text x="240" y="180" class="t-n">1</text>
+          <line x1="255" y1="150" x2="335" y2="150" class="l" />
+          <rect x="335" y="135" width="30" height="30" class="sq-w" />
+          <text x="350" y="180" class="t-n">2</text>
+        </svg>
+      </div>
+
+      <div class="q-text">
+        A mulher II-1 possui visão normal, mas é filha de pai daltônico I-1 (<em>X<sup>d</sup>Y</em>) e mãe homozigota normal I-2. Se ela se casar com o homem II-2 (com visão normal <em>X<sup>D</sup>Y</em>), a probabilidade de conceber uma criança do sexo masculino E daltônica é:
+      </div>
+      <div class="options-group">
+        <label class="opt-label"><input type="radio" name="q11" value="A"> A) 1/2.</label>
+        <label class="opt-label"><input type="radio" name="q11" value="B"> B) 1/4.</label>
+        <label class="opt-label"><input type="radio" name="q11" value="C"> C) 1/8.</label>
+        <label class="opt-label"><input type="radio" name="q11" value="D"> D) 3/4.</label>
+        <label class="opt-label"><input type="radio" name="q11" value="E"> E) Zero.</label>
+      </div>
+      <div class="feedback-box" id="feedback-11"></div>
+    </div>
+
+    <!-- QUESTÃO 12 -->
+    <div class="question" id="q-block-12">
+      <div class="q-header">
+        <span class="q-badge">Questão 12</span>
+        <span class="q-tag">Espaço Amostral Restrito ao Sexo</span>
+      </div>
+      <div class="q-text">
+        Considere o mesmo casal da Questão 11 (mulher heterozigota <em>X<sup>D</sup>X<sup>d</sup></em> e homem normal <em>X<sup>D</sup>Y</em>). Se a ultrassonografia confirmar previamente que a gestante está gerando um feto <strong>do sexo masculino</strong>, qual a probabilidade de esse menino ser daltônico?
+      </div>
+      <div class="options-group">
+        <label class="opt-label"><input type="radio" name="q12" value="A"> A) 1/4.</label>
+        <label class="opt-label"><input type="radio" name="q12" value="B"> B) 1/2.</label>
+        <label class="opt-label"><input type="radio" name="q12" value="C"> C) 3/4.</label>
+        <label class="opt-label"><input type="radio" name="q12" value="D"> D) 1/8.</label>
+        <label class="opt-label"><input type="radio" name="q12" value="E"> E) 100%.</label>
+      </div>
+      <div class="feedback-box" id="feedback-12"></div>
+    </div>
+
+    <!-- QUESTÃO 13 -->
+    <div class="question" id="q-block-13">
+      <div class="q-header">
+        <span class="q-badge">Questão 13</span>
+        <span class="q-tag">Regra do E com Dois Loci</span>
+      </div>
+      <div class="q-text">
+        Um homem heterozigoto para o albinismo e pertencente ao grupo sanguíneo O (<em>Aa ii</em>) casa-se com uma mulher heterozigota para o albinismo e do grupo sanguíneo AB (<em>Aa I<sup>A</sup>I<sup>B</sup></em>). A probabilidade de esse casal conceber uma criança com pigmentação cutânea normal E do grupo sanguíneo A é:
+      </div>
+      <div class="options-group">
+        <label class="opt-label"><input type="radio" name="q13" value="A"> A) 3/8.</label>
+        <label class="opt-label"><input type="radio" name="q13" value="B"> B) 3/16.</label>
+        <label class="opt-label"><input type="radio" name="q13" value="C"> C) 1/4.</label>
+        <label class="opt-label"><input type="radio" name="q13" value="D"> D) 1/8.</label>
+        <label class="opt-label"><input type="radio" name="q13" value="E"> E) 1/2.</label>
+      </div>
+      <div class="feedback-box" id="feedback-13"></div>
+    </div>
+
+    <!-- QUESTÃO 14 COM HEREDOGRAMA 5 -->
+    <div class="question" id="q-block-14">
+      <div class="q-header">
+        <span class="q-badge">Questão 14</span>
+        <span class="q-tag">Condicionada com Dois Irmãos Sadios</span>
+      </div>
+      <div class="q-text">
+        O heredograma abaixo mostra um casal heterozigoto para fibrose cística que concebeu dois descendentes sucessivos, ambos fenotipicamente normais:
+      </div>
+
+      <div class="svg-wrapper">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 210" width="380" height="155">
+          <style>
+            .l { stroke: #1e293b; stroke-width: 2.2; fill: none; }
+            .sq-w { fill: #ffffff; stroke: #1e293b; stroke-width: 2.2; }
+            .ci-w { fill: #ffffff; stroke: #1e293b; stroke-width: 2.2; }
+            .t-g { font-family: 'Segoe UI', sans-serif; font-size: 15px; font-weight: 800; fill: #0284c7; }
+            .t-n { font-family: 'Segoe UI', sans-serif; font-size: 11px; font-weight: 600; fill: #334155; text-anchor: middle; }
+          </style>
+          <text x="25" y="55" class="t-g">I</text>
+          <text x="25" y="155" class="t-g">II</text>
+          <line x1="210" y1="50" x2="290" y2="50" class="l" />
+          <line x1="250" y1="50" x2="250" y2="95" class="l" />
+          <rect x="180" y="35" width="30" height="30" class="sq-w" />
+          <text x="195" y="80" class="t-n">1</text>
+          <circle cx="305" cy="50" r="15" class="ci-w" />
+          <text x="305" y="80" class="t-n">2</text>
+          <line x1="190" y1="95" x2="310" y2="95" class="l" />
+          <line x1="190" y1="95" x2="190" y2="135" class="l" />
+          <line x1="310" y1="95" x2="310" y2="135" class="l" />
+          <rect x="175" y="135" width="30" height="30" class="sq-w" />
+          <text x="190" y="180" class="t-n">1</text>
+          <circle cx="310" cy="150" r="15" class="ci-w" />
+          <text x="310" y="180" class="t-n">2</text>
+        </svg>
+      </div>
+
+      <div class="q-text">
+        Sabendo que tanto II-1 quanto II-2 são saudáveis, qual a probabilidade matemática exata de que <strong>ambos os irmãos</strong> sejam portadores heterozigotos (<em>Aa</em>) do alelo da doença?
+      </div>
+      <div class="options-group">
+        <label class="opt-label"><input type="radio" name="q14" value="A"> A) 1/4.</label>
+        <label class="opt-label"><input type="radio" name="q14" value="B"> B) 1/2.</label>
+        <label class="opt-label"><input type="radio" name="q14" value="C"> C) 4/9.</label>
+        <label class="opt-label"><input type="radio" name="q14" value="D"> D) 2/3.</label>
+        <label class="opt-label"><input type="radio" name="q14" value="E"> E) 9/16.</label>
+      </div>
+      <div class="feedback-box" id="feedback-14"></div>
+    </div>
+
+    <!-- QUESTÃO 15 -->
+    <div class="question" id="q-block-15">
+      <div class="q-header">
+        <span class="q-badge">Questão 15</span>
+        <span class="q-tag">Sequência Cronológica Pré-Definida</span>
+      </div>
+      <div class="q-text">
+        Um casal heterozigoto para o gene do albinismo (<em>Aa &times; Aa</em>) deseja ter três filhos e gostaria de saber a probabilidade de que os nascimentos ocorram estritamente na seguinte ordem: o primeiro filho albino, o segundo filho sadio e o terceiro filho albino. Essa probabilidade é de:
+      </div>
+      <div class="options-group">
+        <label class="opt-label"><input type="radio" name="q15" value="A"> A) 3/64.</label>
+        <label class="opt-label"><input type="radio" name="q15" value="B"> B) 9/64.</label>
+        <label class="opt-label"><input type="radio" name="q15" value="C"> C) 27/64.</label>
+        <label class="opt-label"><input type="radio" name="q15" value="D"> D) 1/64.</label>
+        <label class="opt-label"><input type="radio" name="q15" value="E"> E) 1/16.</label>
+      </div>
+      <div class="feedback-box" id="feedback-15"></div>
+    </div>
+
+    <!-- CONTROLES -->
+    <div class="actions-card">
+      <h3 style="margin-top:0; color:#0f172a;">Concluiu as resoluções de probabilidade?</h3>
+      <p style="color:#64748b; font-size:9.5pt; margin-bottom:16px;">
+        Clique para enviar suas respostas. O gabarito oficial com todas as frações e passagens algébricas será liberado instantaneamente abaixo de cada questão.
+      </p>
+      <button type="button" class="btn-submit" onclick="corrigirProbabilidade()">Enviar e Calcular Nota</button>
+      <button type="button" class="btn-reset" onclick="reiniciarProbabilidade()">Limpar Formulário</button>
+      
+      <!-- SCORE -->
+      <div id="score-board">
+        <div style="font-size:11pt; font-weight:700; color:#0284c7; text-transform:uppercase;">Seu Desempenho</div>
+        <div class="score-total" id="score-display">0 / 15</div>
+        <div class="score-detail" id="score-msg"></div>
+      </div>
+    </div>
+
+  </form>
+
+</div>
+
+<script>
+  const GABARITO_PROB = {
+    1: {
+      correta: 'C',
+      passo: 'P(albino aa) = 1/4. P(masculino) = 1/2. Como são eventos simultâneos e independentes (Regra do "E"): 1/4 &times; 1/2 = 1/8.'
+    },
+    2: {
+      correta: 'B',
+      passo: 'Cruzamento Cc &times; Cc gera: 1/4 CC, 2/4 Cc, 1/4 cc. Ser homozigoto significa ser CC OU cc (Regra do "OU"): 1/4 + 1/4 = 2/4 = 1/2 (50%).'
+    },
+    3: {
+      correta: 'C',
+      passo: 'No heredograma, I-1 e I-2 são normais e tiveram o filho II-1 afetado (aa), sendo ambos heterozigotos (Aa &times; Aa). Como a jovem II-2 é sadia, exclui-se aa do espaço amostral (ficam 1 AA : 2 Aa). A probabilidade condicional de ser heterozigota (Aa) é 2/3.'
+    },
+    4: {
+      correta: 'A',
+      passo: 'Acondroplasia (Aa &times; Aa): 1 AA (mortalidade fetal), 2 Aa (vivos acondroplásicos), 1 aa (vivos normais). Entre os vivos, a chance de acondroplasia é 2/3. Para dois filhos sucessivos (Regra do "E"): 2/3 &times; 2/3 = 4/9.'
+    },
+    5: {
+      correta: 'B',
+      passo: 'No heredograma, os pais I-1 e I-2 são normais e geraram a filha II-1 afetada (aa), logo são Aa &times; Aa. O homem II-2 é sadio, portanto sua probabilidade condicional de ser heterozigoto (Aa) é 2/3. A mulher II-3 é sabidamente heterozigota (Aa, chance 1). Em casal Aa &times; Aa, a chance de filho doente (aa) é 1/4. Multiplicação: 2/3 &times; 1 &times; 1/4 = 2/12 = 1/6.'
+    },
+    6: {
+      correta: 'B',
+      passo: 'Cruzamento IAi &times; IBi gera: 1/4 IAIB (AB), 1/4 IAi (A), 1/4 IBi (B) e 1/4 ii (O). P(grupo A OU grupo B) = 1/4 + 1/4 = 2/4 = 1/2 (Regra do "OU").'
+    },
+    7: {
+      correta: 'C',
+      passo: 'Probabilidade de cada sequência (ex.: MMF) = (1/2)³ = 1/8. Combinações possíveis para 2 meninos e 1 menina: C(3, 2) = 3 (MMF, MFM, FMM). Portanto: 3 &times; 1/8 = 3/8.'
+    },
+    8: {
+      correta: 'B',
+      passo: 'No heredograma, II-2 é sadia com irmão míope (aa), logo sua chance condicional de ser Aa é 2/3. O homem II-3 é sadio mas filho de pai míope (I-3 aa), logo é heterozigoto obrigatório Aa (chance 1). Chance de filho míope (aa) para pais Aa &times; Aa = 1/4. Multiplicação: 2/3 &times; 1 &times; 1/4 = 2/12 = 1/6.'
+    },
+    9: {
+      correta: 'B',
+      passo: 'A meiose e a fecundação são eventos biológicos independentes; nascimentos anteriores não afetam as probabilidades das próximas gestações. Em cada gravidez de pais Aa &times; Aa, a chance de nascer sadio (A_) permanece estritamente 3/4 (75%).'
+    },
+    10: {
+      correta: 'C',
+      passo: 'Pelo menos um afetado é o evento complementar de "todos sadios". P(sadio) = 3/4. P(3 filhos sadios) = (3/4)³ = 27/64. P(pelo menos 1 afetado) = 1 - 27/64 = 37/64.'
+    },
+    11: {
+      correta: 'B',
+      passo: 'No heredograma, a mulher II-1 herdou o cromossomo Xd do pai afetado I-1, sendo heterozigota (XDXd). O marido II-2 tem visão normal (XDY). Cruzamento: 1/4 XDXD, 1/4 XDXd, 1/4 XDY, 1/4 XdY. A chance de filho do sexo masculino E daltônico (XdY) é de 1/4 (25%).'
+    },
+    12: {
+      correta: 'B',
+      passo: 'Com o sexo masculino previamente confirmado pela ultrassonografia, o espaço amostral restringe-se aos homens possíveis (XDY e XdY). Metade deles é daltônica: chance = 1/2 (50%).'
+    },
+    13: {
+      correta: 'A',
+      passo: 'Locus da pigmentação (Aa &times; Aa): P(normal A_) = 3/4. Locus ABO (ii &times; IAIB): produz 1/2 IAi (tipo A) e 1/2 IBi (tipo B). P(tipo A) = 1/2. Como os loci segregam de forma independente (Regra do "E"): 3/4 &times; 1/2 = 3/8.'
+    },
+    14: {
+      correta: 'C',
+      passo: 'No heredograma, os genitores I-1 e I-2 são heterozigotos (Aa &times; Aa). Para cada filho sadio, a chance condicional de ser heterozigoto (Aa) é 2/3. Para dois filhos sadios independentes (Regra do "E"): 2/3 &times; 2/3 = 4/9.'
+    },
+    15: {
+      correta: 'A',
+      passo: 'Como a ordem exata dos nascimentos já foi imposta pelo enunciado, não se aplica combinação: P(1º albino) = 1/4; P(2º sadio) = 3/4; P(3º albino) = 1/4. Multiplicação direta: 1/4 &times; 3/4 &times; 1/4 = 3/64.'
+    }
+  };
+
+  // EFEITO VISUAL AO SELECIONAR UMA OPÇÃO
+  document.querySelectorAll('.opt-label').forEach(label => {
+    label.addEventListener('click', function() {
+      const radio = this.querySelector('input[type="radio"]');
+      const groupName = radio.name;
+      document.querySelectorAll(`input[name="${groupName}"]`).forEach(r => {
+        r.closest('.opt-label').classList.remove('user-selected');
+      });
+      this.classList.add('user-selected');
+    });
+  });
+
+  // CORREÇÃO
+  function corrigirProbabilidade() {
+    let acertos = 0;
+    const total = 15;
+
+    for (let i = 1; i <= total; i++) {
+      const selected = document.querySelector(`input[name="q${i}"]:checked`);
+      const qBlock = document.getElementById(`q-block-${i}`);
+      const feedback = document.getElementById(`feedback-${i}`);
+      const correctVal = GABARITO_PROB[i].correta;
+      const passo = GABARITO_PROB[i].passo;
+
+      qBlock.classList.remove('correct-border', 'incorrect-border');
+      feedback.className = 'feedback-box';
+
+      const options = qBlock.querySelectorAll('.opt-label');
+      options.forEach(opt => {
+        const input = opt.querySelector('input[type="radio"]');
+        opt.classList.remove('is-correct', 'is-wrong');
+        if (input.value === correctVal) {
+          opt.classList.add('is-correct');
+        }
+        if (selected && selected.value === input.value && selected.value !== correctVal) {
+          opt.classList.add('is-wrong');
+        }
+      });
+
+      if (selected && selected.value === correctVal) {
+        acertos++;
+        qBlock.classList.add('correct-border');
+        feedback.classList.add('show', 'correct');
+        feedback.innerHTML = `<strong>Correto! Alternativa (${correctVal})</strong><br><em>Resolução:</em> ${passo}`;
+      } else {
+        qBlock.classList.add('incorrect-border');
+        feedback.classList.add('show', 'incorrect');
+        const marcacao = selected ? `Você assinalou (${selected.value}).` : 'Questão deixada em branco.';
+        feedback.innerHTML = `<strong>Atenção:</strong> ${marcacao} O gabarito oficial é <strong>(${correctVal})</strong>.<br><em>Resolução:</em> ${passo}`;
+      }
+    }
+
+    const scoreBoard = document.getElementById('score-board');
+    const scoreDisplay = document.getElementById('score-display');
+    const scoreMsg = document.getElementById('score-msg');
+
+    scoreDisplay.innerText = `${acertos} / ${total}`;
+    const pct = (acertos / total) * 100;
+
+    if (pct >= 80) {
+      scoreMsg.innerHTML = `Excelente domínio matemático e genealógico (${pct.toFixed(0)}%)! Você domina probabilidade condicional em heredogramas e distribuição binomial.`;
+      scoreDisplay.style.color = '#059669';
+    } else if (pct >= 50) {
+      scoreMsg.innerHTML = `Bom resultado (${pct.toFixed(0)}%). Dica: atenção especial à redução do espaço amostral ao analisar indivíduos sadios em heredogramas.`;
+      scoreDisplay.style.color = '#0284c7';
+    } else {
+      scoreMsg.innerHTML = `Aproveitamento de ${pct.toFixed(0)}%. Sugestão: revise as regras de soma (OU) e produto (E) associadas à leitura de genealogias.`;
+      scoreDisplay.style.color = '#e11d48';
+    }
+
+    scoreBoard.style.display = 'block';
+    scoreBoard.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  // REINICIAR
+  function reiniciarProbabilidade() {
+    document.getElementById('simulado-prob-form').reset();
+    document.querySelectorAll('.opt-label').forEach(opt => {
+      opt.classList.remove('user-selected', 'is-correct', 'is-wrong');
+    });
+    document.querySelectorAll('.question').forEach(q => {
+      q.classList.remove('correct-border', 'incorrect-border');
+    });
+    document.querySelectorAll('.feedback-box').forEach(fb => {
+      fb.className = 'feedback-box';
+      fb.innerHTML = '';
+    });
+    document.getElementById('score-board').style.display = 'none';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
+
+</body>
+</html>
